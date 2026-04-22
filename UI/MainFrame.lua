@@ -419,8 +419,8 @@ local function CreateMainFrame()
     GUI.ApplyCustomTexture(closeBtn, "Interface\\AddOns\\RaidStation\\Textures\\exis2.blp")
 
     local signature = frame:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    signature:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -10, 38)
-    signature:SetText("Marfin-")
+    signature:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -35, 38)
+    signature:SetText("Marfyn-")
     signature:SetTextColor(1, 0.82, 0) -- dorado elegante
     signature:SetAlpha(0.8)
 
