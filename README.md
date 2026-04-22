@@ -3,7 +3,8 @@
 Raid browser and advertiser addon for World of Warcraft: Wrath of the Lich King (3.3.5a).
 
 ## Features
-- [describe las features principales]
+- Raid browser con búsqueda y filtros
+- Módulo Advertiser con sincronización en vivo
 
 ## Installation
 1. Download the latest release
