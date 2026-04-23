@@ -1,3 +1,6 @@
+-- RaidStation :: Data.lua
+-- Part of RaidStation by Marfin- | 2026
+-- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 ns.Config = {}
 

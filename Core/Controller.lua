@@ -1,3 +1,7 @@
+-- RaidStation :: Core/Controller.lua
+-- Part of RaidStation by Marfin- | 2026
+-- Unauthorized redistribution without credit is prohibited.
+
 local addonName, ns = ...
 local Controller = {
     messages = {},       -- Main storage: sender -> data

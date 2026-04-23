@@ -1,3 +1,6 @@
+-- RaidStation :: UI/NoteFrame.lua
+-- Part of RaidStation by Marfin- | 2026
+-- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local NoteFrame = {}
 

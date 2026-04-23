@@ -1,5 +1,5 @@
--- RaidStation :: Settings.lua
--- Part of RaidStation by Marfin | 2026
+-- RaidStation :: UI/Settings.lua
+-- Part of RaidStation by Marfin- | 2026
 -- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local Settings = {}

@@ -1,3 +1,6 @@
+-- RaidStation :: UI/Rows.lua
+-- Part of RaidStation by Marfyn- | 2026
+-- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local Rows = {}
 

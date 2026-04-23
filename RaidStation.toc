@@ -7,6 +7,7 @@
 ## X-Created: 2026
 ## X-License: MIT — see LICENSE file
 ## X-Credits: Original author Marfin. If redistributing, credit must be preserved.
+## SavedVariables: RaidStationDB
 
 
 # Libs
