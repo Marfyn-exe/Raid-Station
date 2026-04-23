@@ -895,6 +895,14 @@ function lib:WHO_LIST_UPDATE()
 end
 
 function lib:ProcessWhoResults()
+	-- GUARD: Si no hay una query activa de LibWho, ignorar el evento.
+	-- Puede ocurrir cuando el jugador hace /who manualmente o cuando
+	-- otro addon llama SendWho directamente, lo que dispara WHO_LIST_UPDATE
+	-- sin que self.Result haya sido inicializado.
+	if not self.WhoInProgress or not self.Result then
+		return
+	end
+
 	local num
 	self.Total, num = GetNumWhoResults()
 	
@@ -904,7 +912,7 @@ function lib:ProcessWhoResults()
 	for i=1, num do
 		local charname, guildname, level, race, class, zone, nonlocalclass, sex = GetWhoInfo(i)
 		
-		-- CORRECCION CRITICA: Solo guardamos si existe un nombre (charname no es nil)
+		-- Solo guardamos si existe un nombre (charname no es nil)
 		if charname then
 			self.Result[i] = {Name=charname, Guild=guildname, Level=level, Race=race, Class=class, Zone=zone, NoLocaleClass=nonlocalclass, Sex=sex }
 		end
