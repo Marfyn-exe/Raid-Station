@@ -4,7 +4,7 @@
 local addonName, ns = ...
 ns.Config = {}
 
-local csep = "[^%w]*"
+
 
 -- Synonym Map: Regionalisms/Slang to Canonical IDs
 ns.Config.SYNONYM_MAP = {

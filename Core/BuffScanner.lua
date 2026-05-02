@@ -167,7 +167,17 @@ local function evaluateBuffForPlayer(def, byName, classToken)
         }
     end
 
-    local quality = (matchedSid == def.superiorSpellID) and "superior" or "minor"
+    local quality = "minor"
+    if type(def.superiorSpellID) == "table" then
+        for _, id in ipairs(def.superiorSpellID) do
+            if matchedSid == id then
+                quality = "superior"
+                break
+            end
+        end
+    elseif matchedSid == def.superiorSpellID then
+        quality = "superior"
+    end
     local exp = auraInfo.expirationTime or 0
     local now = GetTime()
     local remaining = (exp > 0) and (exp - now) or nil
@@ -220,7 +230,7 @@ function BuffScanner.PerformFullScan()
     }
 
     local nRaid = GetNumRaidMembers()
-    if nRaid == 0 or nRaid == nil then
+    if nRaid == 0 then
         state.inRaid = false
         BuffScanner.cachedState = state
         return state

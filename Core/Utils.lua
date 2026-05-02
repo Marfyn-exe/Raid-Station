@@ -59,7 +59,6 @@ end
 
 ns.Utils = Utils
 
--- Global helpers
-_G.NewTicker = NewTicker
-_G.NewTimer = NewTimer
-_G.CancelTimer = CancelTimer
+ns.Utils.NewTicker = NewTicker
+ns.Utils.NewTimer = NewTimer
+ns.Utils.CancelTimer = CancelTimer

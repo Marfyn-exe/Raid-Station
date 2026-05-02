@@ -87,13 +87,13 @@ BuffData.DEFINITIONS = {
         nombre = "Luminosidad arcana",
         jerga = "Intelecto",
         spellIDs = { 42995,61316,43002 },
-        superiorSpellID = 43002,61316,
+        superiorSpellID = { 43002, 61316 },
         clase_origen = "Mago",
         tipo = "raid",
         reagente = true,
         descripcion = "Aumenta el intelecto de toda la banda.",
         responsableLinea = "Asignado: cualquier Mago",
-        iconSpellID = 43002,61316,
+        iconSpellID = 43002,
     },
     -- === PALADIN ===
     {

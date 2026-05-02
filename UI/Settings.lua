@@ -251,12 +251,13 @@ function Settings.CreatePanel(parent)
     end
 
     -- Skin checkboxes del panel
-    for i = 1, panel:GetNumChildren() do
-        local child = select(i, panel:GetChildren())
-        if child and child:IsObjectType("CheckButton") then
-            SkinCheckBox(child)
-        end
-    end
+    SkinCheckBox(mergeToggle)
+    SkinCheckBox(debugToggle)
+    SkinCheckBox(minimapToggle)
+    SkinCheckBox(floatToggle)
+    SkinCheckBox(reactiveToggle)
+    SkinCheckBox(windowLockToggle)
+    SkinCheckBox(borderToggle)
     -- === FIN SKIN ===
 
     Settings.Panel = panel

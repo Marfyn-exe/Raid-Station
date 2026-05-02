@@ -142,19 +142,23 @@ function Controller.ExpireEntries()
 end
 
 -- Tickers
-ns.Tickers = {
-    buffer = NewTicker(0.5, Controller.ProcessBuffer),
-    ttl = NewTicker(10, Controller.ExpireEntries)
-}
+ns.Tickers = {}
+
+function Controller.Initialize()
+    if ns.Tickers.buffer then return end
+    -- Usar ns.Utils.NewTicker después de quitar la exportación global
+    ns.Tickers.buffer = ns.Utils.NewTicker(0.5, Controller.ProcessBuffer)
+    ns.Tickers.ttl = ns.Utils.NewTicker(10, Controller.ExpireEntries)
+end
 
 -- Interface Detection (for scrolling safety)
 function Controller.SetInteracting(state)
     Controller.isInteracting = state
     if state then
         if Controller.interactionTimer then
-            CancelTimer(Controller.interactionTimer)
+            ns.Utils.CancelTimer(Controller.interactionTimer)
         end
-        Controller.interactionTimer = NewTicker(5, function()
+        Controller.interactionTimer = ns.Utils.NewTicker(5, function()
             Controller.isInteracting = false
             Controller.interactionTimer = nil
         end)

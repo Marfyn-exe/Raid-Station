@@ -502,6 +502,10 @@ function BuffTab.Initialize()
     btnPull:SetPoint("LEFT", btnReady, "RIGHT", 4, 0)
     btnPull:SetText("Pull")
     btnPull:SetScript("OnClick", function()
+        if not SlashCmdList["DBM"] then
+            print("|cFF00FFFF[Buffs]|r : DBM no está instalado o activo.")
+            return
+        end
         local n = tonumber(BuffTab.ebSeconds:GetText()) or 10
         DEFAULT_CHAT_FRAME.editBox:SetText("/dbm pull " .. n)
         ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
@@ -562,6 +566,10 @@ function BuffTab.Initialize()
     btnBreak:SetPoint("LEFT", fsSeg, "RIGHT", 17, 0)
     btnBreak:SetText("Break")
     btnBreak:SetScript("OnClick", function()
+        if not SlashCmdList["DBM"] then
+            print("|cFF00FFFF[Buffs]|r : DBM no está instalado o activo.")
+            return
+        end
         DEFAULT_CHAT_FRAME.editBox:SetText("/dbm break 5")
         ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
     end)

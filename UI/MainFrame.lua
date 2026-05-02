@@ -385,11 +385,7 @@ local function CreateMainFrame()
     title:SetText("RAID STATION")
     GUI.title = title
 
-    -- Li­nea decorativa dorada bajo el t
-    --local titleLine = frame:CreateTexture(nil, "ARTWORK")
-    --titleLine:SetSize(91, 1)
-    --titleLine:SetPoint("TOP", frame, "TOP", 0, -26)
-    --titleLine:SetTexture(0.9, 0.7, 0.2, 0.4)
+    -- Línea decorativa dorada bajo el título (Removida)
 
     -- Clear Button (Header)
     clearBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
@@ -585,7 +581,9 @@ local function CreateMainFrame()
         scrollBar:SetBackdropColor(0, 0, 0, 0.5)
     end
     scrollFrame:SetScript("OnVerticalScroll", function(self, offset)
-        FauxScrollFrame_OnVerticalScroll(self, offset, ROW_HEIGHT, function() GUI.UpdateList() end)
+        local scrollbar = _G[self:GetName().."ScrollBar"]
+        scrollbar:SetValue(offset)
+        GUI.UpdateList()
         ns.Controller.SetInteracting(true)
     end)
 
@@ -660,10 +658,7 @@ local function CreateMainFrame()
     tabBarBg:SetAllPoints()
     tabBarBg:SetTexture(0, 0, 0, 0.4)
 
-    --local tabBarLine = tabBar:CreateTexture(nil, "ARTWORK")
-    --tabBarLine:SetSize(340, 3)
-    --tabBarLine:SetPoint("TOP", tabBar, "TOP", 0, 0)
-    --tabBarLine:SetTexture(0.9, 0.7, 0.2, 0.3)
+    -- Separador superior (Removido)
 
     local tabDefs = {
         { label = "Buscar",     id = 1 },

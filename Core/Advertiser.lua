@@ -198,20 +198,17 @@ function Advertiser:LoadPattern(index)
 end
 
 -- Item Link Handling (Hooked from Global)
-local _ChatEdit_InsertLink = ChatEdit_InsertLink
-ChatEdit_InsertLink = function(text)
+hooksecurefunc("ChatEdit_InsertLink", function(text)
     if ns.GUI.activeEditBox and ns.GUI.activeEditBox:IsVisible() then
         ns.GUI.activeEditBox:Insert(text)
-        return true
     end
-    return _ChatEdit_InsertLink(text)
-end
+end)
 
 -- Initialize
 Advertiser:ResetPatterns()
 
 -- Global Ticker for Advertiser
-ns.AdvertiserTicker = NewTicker(1, function()
+ns.AdvertiserTicker = ns.Utils.NewTicker(1, function()
     Advertiser:OnUpdate()
 end)
 

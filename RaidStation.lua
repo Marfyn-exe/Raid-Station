@@ -92,6 +92,7 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         end
         
         ns.GUI.Initialize()
+        ns.Controller.Initialize()
         ns.BuffScanner.Initialize()
         ns.Settings.Initialize()
         ns.BuffTab.Initialize()
@@ -122,11 +123,8 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         local chatFrame = CreateFrame("Frame")
         chatFrame:RegisterEvent("CHAT_MSG_CHANNEL")
         chatFrame:RegisterEvent("CHAT_MSG_YELL")
-        chatFrame:SetScript("OnEvent", function(_, _, message, sender, ...)
-            -- In 3.3.5a, guid is the 12th argument for CHAT_MSG_CHANNEL
-            -- arg1=message, arg2=sender, arg3=... index 1. So arg12 is index 10.
-            local guid = select(10, ...) 
-            ns.Controller.AddMessage(sender, message, guid)
+        chatFrame:SetScript("OnEvent", function(self, event, msg, sender, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, guid)
+            ns.Controller.AddMessage(sender, msg, guid)
         end)
         
         print("|cff00ffffRaid Station|r cargado! Escribe |cffffff00/rs|r para abrir.")
