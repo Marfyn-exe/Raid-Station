@@ -8,11 +8,13 @@ Raid browser and advertiser addon for World of Warcraft: Wrath of the Lich King 
 ## Features
 - Raid browser con búsqueda y filtros
 - Módulo Advertiser con sincronización en vivo
+- Módulo Buff Monitor, buff checks + asignacion + botones utiles para raid.
 
 ## Installation
 1. Download the latest release
 2. Extract to `Interface/AddOns/RaidStation/`
 3. Reload WoW or log in
+4. Manual: [![Preview del addon](Screenshot/5.png)](Screenshot/5.png)
 
 ## Author
 **Marfyn-** — UltimoWow (characters: Joana / WowAcademy)  
