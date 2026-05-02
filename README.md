@@ -14,7 +14,7 @@ Raid browser and advertiser addon for World of Warcraft: Wrath of the Lich King 
 1. Download the latest release
 2. Extract to `Interface/AddOns/RaidStation/`
 3. Reload WoW or log in
-4. Manual: [![Manual](Screenshot/4.png)](Screenshot/4.png)
+4. Manual: [Ver imagen del Manual](Screenshot/5.png)
 
 ## Author
 **Marfyn-** — UltimoWow (characters: Joana / WowAcademy)  
