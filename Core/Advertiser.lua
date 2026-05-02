@@ -139,13 +139,16 @@ function Advertiser:OnUpdate()
         -- Send to all selected channels
         for chan, active in pairs(self.channels) do
             if active then
-                if chan == "GLD" then
+                if chan == "/rw" then
+                    SendChatMessage(msg, "RAID_WARNING")
+                elseif chan == "RAID" then
+                    SendChatMessage(msg, "RAID")
+                elseif chan == "GLD" then
                     SendChatMessage(msg, "GUILD")
                 else
-                    -- For numbers, assume it's a channel index
-                    local id = tonumber(chan)
-                    if id then
-                        SendChatMessage(msg, "CHANNEL", nil, id)
+                    local chanNum = tonumber(chan)
+                    if chanNum then
+                        SendChatMessage(msg, "CHANNEL", nil, chanNum)
                     end
                 end
             end

@@ -1,5 +1,5 @@
 -- RaidStation :: UI/Minimap.lua
--- Part of RaidStation by Marfin- | 2026
+-- Part of RaidStation by Marfyn- | 2026
 -- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local Minimap = {}
@@ -17,7 +17,7 @@ function Minimap.UpdatePosition()
 end
 
 function Minimap.CreateButton()
-    local button = CreateFrame("Button", "MarfinRBrowserMinimapButton", _G.Minimap)
+    local button = CreateFrame("Button", "RaidStationMinimapButton", _G.Minimap)
     button:SetSize(31, 31)
     button:SetFrameLevel(8)
     button:SetToplevel(true)
@@ -120,6 +120,10 @@ function Minimap.ApplyVisualState(isActive)
             btn.icon:SetDesaturated(true)
             btn.icon:SetVertexColor(1, 0.2, 0.2, 0.9)
         end
+    end
+
+    if ns.GUI.FloatBtn and ns.GUI.FloatBtn.ApplyState then
+        ns.GUI.FloatBtn.ApplyState(isActive)
     end
 end
 

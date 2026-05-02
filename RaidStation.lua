@@ -49,9 +49,52 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         for k, v in pairs(RaidStationDB) do
             ns.Config.DEFAULTS[k] = v
         end
+
+        -- Migracion: asignaciones antiguas por nombre -> lista lineal
+        if type(RaidStationDB.paladinAssignments) == "table" and next(RaidStationDB.paladinAssignments)
+            and (not RaidStationDB.paladinAssignmentList or #RaidStationDB.paladinAssignmentList == 0) then
+            RaidStationDB.paladinAssignmentList = {}
+            for pname, rows in pairs(RaidStationDB.paladinAssignments) do
+                if type(rows) == "table" then
+                    for _, row in ipairs(rows) do
+                        if type(row) == "table" and row.spellID then
+                            table.insert(RaidStationDB.paladinAssignmentList, {
+                                paladin = pname,
+                                spellID = row.spellID,
+                                clases = row.clases or row.classes or { "ALL" },
+                            })
+                        end
+                    end
+                end
+            end
+        end
+
+        if type(RaidStationDB.buffTab_alerts) ~= "table" then
+            RaidStationDB.buffTab_alerts = {}
+        end
+        for i = 1, 2 do
+            if type(RaidStationDB.buffTab_alerts[i]) ~= "table" then
+                RaidStationDB.buffTab_alerts[i] = { shortName = "", message = "", channel = "DEFAULT" }
+            end
+        end
+
+        if RaidStationDB.buffTab_alertToRaidWarning == nil then
+            RaidStationDB.buffTab_alertToRaidWarning = true
+        end
+        if RaidStationDB.buffTab_alertToRaid == nil then
+            RaidStationDB.buffTab_alertToRaid = false
+        end
+        if RaidStationDB.buffTab_checkConsumables == nil then
+            RaidStationDB.buffTab_checkConsumables = RaidStationDB.buffTab_checkConsume == true
+        end
+        if RaidStationDB.buffTab_checkConsume == nil then
+            RaidStationDB.buffTab_checkConsume = RaidStationDB.buffTab_checkConsumables == true
+        end
         
         ns.GUI.Initialize()
+        ns.BuffScanner.Initialize()
         ns.Settings.Initialize()
+        ns.BuffTab.Initialize()
         ns.AdvertiserUI.Initialize()
         ns.Minimap.Initialize()
         
@@ -66,6 +109,14 @@ frame:SetScript("OnEvent", function(self, event, arg1)
         end
 
         ns.Stats.RequestRaidLockouts()
+
+        if ns.BuffData and ns.BuffData.BuildIconCache then
+            ns.BuffData.BuildIconCache()
+        end
+
+        if ns.BuffScanner and ns.BuffScanner.StartWatching then
+            ns.BuffScanner.StartWatching()
+        end
         
         -- Register Chat Events
         local chatFrame = CreateFrame("Frame")

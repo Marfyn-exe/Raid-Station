@@ -26,11 +26,15 @@ Core\Matcher.lua
 Core\Stats.lua
 Core\Advertiser.lua
 Core\Controller.lua
+Core\BuffData.lua
+Core\BuffScanner.lua
 
 # UI
 UI\Rows.lua
 UI\MainFrame.lua
+UI\BuffSettings.lua
 UI\Settings.lua
+UI\BuffTab.lua
 UI\Advertiser.lua
 UI\Minimap.lua
 UI\NoteFrame.lua

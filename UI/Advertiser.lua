@@ -1,5 +1,5 @@
 -- RaidStation :: UI/Advertiser.lua
--- Part of RaidStation by Marfin- | 2026
+-- Part of RaidStation by Marfyn- | 2026
 -- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local AdvertiserUI = {}
@@ -226,7 +226,7 @@ function AdvertiserUI.CreatePanel(parent)
     chanLabel:SetPoint("LEFT", 12, 0)
     chanLabel:SetText("|cffffff00Canales|r")
 
-    local channels = { "1", "2", "3", "4", "5", "GLD" }
+    local channels = { "1", "2", "/rw", "RAID", "5", "GLD" }
     AdvertiserUI.chanChecks = {}
     for i, chan in ipairs(channels) do
         local check = CreateFrame("CheckButton", "RaidStationChanCheck" .. i, chanBox, "ChatConfigCheckButtonTemplate")
@@ -240,7 +240,7 @@ function AdvertiserUI.CreatePanel(parent)
         local checkText = _G[check:GetName() .. "Text"]
         checkText:SetText(chan)
         checkText:SetFontObject("GameFontHighlightSmall")
-        checkText:SetWidth(chan == "GLD" and 35 or 12)
+        checkText:SetWidth(chan == "GLD" and 35 or chan == "/rw" and 22 or chan == "RAID" and 30 or 12)
         check:SetHitRectInsets(0, -checkText:GetWidth(), 0, 0)
 
         check:SetScript("OnClick", function(self)
@@ -401,7 +401,7 @@ function AdvertiserUI.CreatePanel(parent)
             if target then
                 target:Insert(rt)
             else
-                print("|cff00ff00Marfin|r: Primero haz clic en un cuadro de texto para insertar el símbolo.")
+                print("|cff00ff00Marfyn|r: Primero haz clic en un cuadro de texto para insertar el símbolo.")
             end
         end)
         ns.GUI.SkinButton(btn, false)
@@ -481,7 +481,7 @@ function AdvertiserUI.CreatePanel(parent)
         if idx and idx >= 1 and idx <= 6 then
             ns.Advertiser:SavePattern(idx)
         else
-            print("|cff00ff00Marfin|r: Selecciona un slot (Patron 1-6) primero.")
+            print("|cff00ff00Marfyn|r: Selecciona un slot (Patron 1-6) primero.")
         end
     end)
     AdvertiserUI.savePatternBtn = savePatternBtn
@@ -581,7 +581,7 @@ function AdvertiserUI.CreatePanel(parent)
         p.fullMessage = current
 
         if not isSilent then
-            print("|cff00ff00Marfin|r: Composición actualizada.")
+            print("|cff00ff00Marfyn|r: Composición actualizada.")
         end
 
         -- Sync Performance & Visual Feedback

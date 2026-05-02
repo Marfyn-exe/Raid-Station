@@ -1,5 +1,5 @@
 -- RaidStation :: UI/MainFrame.lua
--- Part of RaidStation by Marfin- | 2026
+-- Part of RaidStation by Marfyn- | 2026
 -- Unauthorized redistribution without credit is prohibited.
 local addonName, ns = ...
 local GUI = {
@@ -113,7 +113,7 @@ function GUI.SkinDropDown(drop)
         btn:SetPoint("RIGHT", drop, "RIGHT", -10, 3)
         btn:SetSize(20, 20)
 
-        -- Quitamos el skin individual del botÃ³n para que parezca una sola pieza
+        -- Quitamos el skin individual del boton para que parezca una sola pieza
         if btn.SetBackdrop then btn:SetBackdrop(nil) end
 
         local tex = btn:GetNormalTexture()
@@ -123,7 +123,7 @@ function GUI.SkinDropDown(drop)
         end
     end
 
-    -- Fondo Ãºnico para todo el dropdown (incluyendo el botÃ³n)
+    -- Fondo unico para todo el dropdown (incluyendo el boton)
     local bg = drop.mskin or CreateFrame("Frame", nil, drop)
     bg:ClearAllPoints()
     bg:SetPoint("LEFT", 15, 3)
@@ -326,10 +326,10 @@ local function CreateMainFrame()
     }
     local RS_BACKDROP_NOBORDER = {
         bgFile = "Interface\\Buttons\\WHITE8X8",
-        edgeFile = "Interface\\Buttons\\WHITE8X8", -- textura sÃ³lida = borde invisible
+        edgeFile = "Interface\\Buttons\\WHITE8X8", -- textura salida = borde invisible
         tile = true,
         tileSize = 32,
-        edgeSize = 1,                              -- edgeSize=1 mÃ­nimo
+        edgeSize = 1,                              -- edgeSize=1 mi­nimo
         insets = { left = 3, right = 3, top = 3, bottom = 3 }
     }
 
@@ -347,7 +347,7 @@ local function CreateMainFrame()
             frame:SetBackdropBorderColor(0, 0, 0, 0)
         end
 
-        -- SIEMPRE re-aplicar el fondo despuÃ©s de SetBackdrop
+        -- SIEMPRE re-aplicar el fondo despue©s de SetBackdrop
         GUI.ApplyBackground(RaidStationDB.bgChoice or 0)
     end
 
@@ -383,6 +383,7 @@ local function CreateMainFrame()
     local title = frame:CreateFontString(nil, "OVERLAY", "GameFontNormal")
     title:SetPoint("TOP", frame, "TOP", 0, -17)
     title:SetText("RAID STATION")
+    GUI.title = title
 
     -- Li­nea decorativa dorada bajo el t
     --local titleLine = frame:CreateTexture(nil, "ARTWORK")
@@ -407,7 +408,7 @@ local function CreateMainFrame()
         GameTooltip:SetOwner(self, "ANCHOR_BOTTOM")
         GameTooltip:SetText("Limpiar formulario", 1, 0.82, 0)
         GameTooltip:AddLine("Resetea todos los campos del anunciador de banda.", 1, 1, 1, true)
-        GameTooltip:AddLine("No detiene el spam si estÃ¡ activo.", 0.7, 0.7, 0.7, true)
+        GameTooltip:AddLine("No detiene el spam si esta¡ activo.", 0.7, 0.7, 0.7, true)
         GameTooltip:Show()
     end)
     clearBtn:SetScript("OnLeave", function() GameTooltip:Hide() end)
@@ -422,24 +423,24 @@ local function CreateMainFrame()
     GUI.ApplyCustomTexture(closeBtn, "Interface\\AddOns\\RaidStation\\Textures\\exis2.blp")
 
     local signature = frame:CreateFontString(nil, "OVERLAY", "GameFontDisableSmall")
-    signature:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -10, 38)
-    signature:SetText("Marfin-")
+    signature:SetPoint("BOTTOMRIGHT", frame, "BOTTOMRIGHT", -35, 38)
+    signature:SetText("Marfyn-")
     signature:SetTextColor(1, 0.82, 0) -- dorado elegante
     signature:SetAlpha(0.8)
 
     -- Search EditBox
-    local search = CreateFrame("EditBox", "RaidStationSearch", frame, "InputBoxTemplate")
+    local search = CreateFrame("EditBox", "RaidStationSearch", frame,"InputBoxTemplate")
     search:SetSize(340, 22)
     search:SetPoint("TOP", frame, "TOP", 0, -42)
     search:SetAutoFocus(false)
     GUI.SkinEditBox(search)
-    -- 1. Definimos la forma y las texturas (esto es lo que reemplaza a tu cÃ³digo anterior)
+    -- 1. Definimos la forma y las texturas (esto es lo que reemplaza a tu codigo anterior)
     search:SetBackdrop({
         bgFile   = "Interface\\Tooltips\\UI-Tooltip-Background", -- Fondo del Tooltip
         edgeFile = "Interface\\Tooltips\\UI-Tooltip-Border",     -- Borde redondeado del Tooltip
         tile     = true,
         tileSize = 16,
-        edgeSize = 14, -- Ajusta este nÃºmero: mÃ¡s alto = borde mÃ¡s grueso
+        edgeSize = 14, -- Ajusta este numero: ma¡s alto = borde mas grueso
         insets   = { left = 4, right = 4, top = 4, bottom = 4 }
     })
 
@@ -529,7 +530,7 @@ local function CreateMainFrame()
             GameTooltip:Show()
         end)
         btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
-        -- Remover skin ElvUI para estos botones especÃ­ficos
+        -- Remover skin ElvUI para estos botones especi­ficos
         if btn.SetNormalTexture then btn:SetNormalTexture("") end
         if btn.SetPushedTexture then btn:SetPushedTexture("") end
         if btn.SetHighlightTexture then btn:SetHighlightTexture("") end
@@ -548,7 +549,7 @@ local function CreateMainFrame()
         bgTex:SetTexture("Interface\\AddOns\\RaidStation\\Textures\\nbutton1.blp")
         bgTex:SetAlpha(0.85)
 
-        -- Textura hover: misma textura, mÃ¡s brillante al pasar el mouse
+        -- Textura hover: misma textura, mas brillante al pasar el mouse
         btn:HookScript("OnEnter", function(self)
             bgTex:SetAlpha(1.0)
             bgTex:SetVertexColor(0, 0.6, 1) -- tinte azul ElvUI al hover
@@ -573,7 +574,7 @@ local function CreateMainFrame()
     local scrollBar = _G[scrollFrame:GetName() .. "ScrollBar"]
     scrollBar:SetWidth(10)
 
-    -- Lo movemos 5 pÃ­xeles a la izquierda de su posiciÃ³n original en el borde (lado derecho)
+    -- Lo movemos 5 pi­xeles a la izquierda de su posicion original en el borde (lado derecho)
     scrollBar:ClearAllPoints()
     scrollBar:SetPoint("TOPLEFT", scrollFrame, "TOPRIGHT", -10, -16)
     scrollBar:SetPoint("BOTTOMLEFT", scrollFrame, "BOTTOMRIGHT", -10, 16)
@@ -603,7 +604,7 @@ local function CreateMainFrame()
     sortHeaderLine:SetPoint("BOTTOMRIGHT", 0, 0)
     sortHeaderLine:SetTexture(0.9, 0.7, 0.2, 0.3)
 
-    -- Columna labels (estÃ¡ticos, solo decorativos)
+    -- Columna labels (estaticos, solo decorativos)
     local lblNombre = sortHeader:CreateFontString(nil, "OVERLAY", "GameFontNormalSmall")
     lblNombre:SetPoint("LEFT", sortHeader, "LEFT", 15, 0)
     lblNombre:SetText("Nombre")
@@ -639,6 +640,9 @@ local function CreateMainFrame()
             GUI.SaveWindowPosition()
         end
         ns.Controller.SetInteracting(false)
+        if ns.BuffTab and ns.BuffTab.popout and ns.BuffTab.popout:IsShown() then
+            ns.BuffTab.popout:Hide()
+        end
     end)
     frame:SetScript("OnShow", function() GUI.UpdateList() end)
 
@@ -649,7 +653,7 @@ local function CreateMainFrame()
 
     -- Tab Bar (BOTTOM)
     local tabBar = CreateFrame("Frame", nil, frame)
-    tabBar:SetSize(325, 22)
+    tabBar:SetSize(340, 22)
     tabBar:SetPoint("BOTTOM", frame, "BOTTOM", -1, 8)
 
     local tabBarBg = tabBar:CreateTexture(nil, "BACKGROUND")
@@ -663,16 +667,18 @@ local function CreateMainFrame()
 
     local tabDefs = {
         { label = "Buscar",     id = 1 },
-        { label = "Anunciador", id = 3 },
-        { label = "Config",     id = 2 },
+        { label = "Anunciador", id = 2 },
+        { label = "Buffs",      id = 3 },
+        { label = "Config",     id = 4 },
     }
 
     local tabTooltips = {
-        [1] = "Buscar raids activas en el canal general.",
-        [2] = "Ajustes del addon: TTL, canales, apariencia.",
-        [3] = "Anunciador de banda: configura y envia spam de reclutamiento.",
+        [1] = "Buscar raids.",
+        [2] = "Anunciador de banda.",
+        [3] = "Buffs Monitor.",
+        [4] = "Ajustes.",
     }
-    local tabWidth = 105
+    local tabWidth = 78
     local tabs = {}
 
     for i, def in ipairs(tabDefs) do
@@ -724,6 +730,14 @@ local function CreateMainFrame()
     function GUI.SelectTab(id)
         GUI.selectedTab = id
 
+        if GUI.title then
+            if id == 3 then
+                GUI.title:SetText("BUFF MONITOR")
+            else
+                GUI.title:SetText("RAID STATION")
+            end
+        end
+
         if GUI.tabs then
             for k, t in pairs(GUI.tabs) do
                 t:SetActive(k == id)
@@ -741,16 +755,20 @@ local function CreateMainFrame()
 
         -- Clear button visibility (only in Advertiser tab)
         if clearBtn then
-            if id == 3 then clearBtn:Show() else clearBtn:Hide() end
+            if id == 2 then clearBtn:Show() else clearBtn:Hide() end
         end
 
         -- Firma solo en Config
         if signature then
-            if id == 2 then
+            if id == 4 then
                 signature:Show()
             else
                 signature:Hide()
             end
+        end
+
+        if ns.BuffTab then
+            if id == 3 then ns.BuffTab.Show() else ns.BuffTab.Hide() end
         end
 
         if id == 1 then
@@ -767,14 +785,17 @@ local function CreateMainFrame()
 
         -- Explicitly handle panel visibility
         if ns.Settings and ns.Settings.Panel then
-            if id == 2 then ns.Settings.Panel:Show() else ns.Settings.Panel:Hide() end
+            if id == 4 then ns.Settings.Panel:Show() else ns.Settings.Panel:Hide() end
         end
 
         if ns.AdvertiserUI and ns.AdvertiserUI.Panel then
-            if id == 3 then ns.AdvertiserUI.Panel:Show() else ns.AdvertiserUI.Panel:Hide() end
+            if id == 2 then ns.AdvertiserUI.Panel:Show() else ns.AdvertiserUI.Panel:Hide() end
         end
 
         GUI.RefreshView()
+        if id == 3 and ns.BuffTab and ns.BuffTab.Refresh then
+            ns.BuffTab.Refresh()
+        end
     end
 
     GUI.SelectTab(1)
@@ -988,6 +1009,9 @@ function GUI.RefreshView()
     if tab == 1 then
         GUI.MainFrame.scrollFrame:Show()
         GUI.UpdateList()
+    elseif tab == 3 then
+        GUI.MainFrame.scrollFrame:Hide()
+        for i = 1, ROWS_LIMIT do GUI.rows[i]:Hide() end
     else
         GUI.MainFrame.scrollFrame:Hide()
         for i = 1, ROWS_LIMIT do GUI.rows[i]:Hide() end
@@ -998,6 +1022,91 @@ end
 function GUI.Initialize()
     if GUI.MainFrame then return end
     CreateMainFrame()
+
+    -- == BOTÓN FLOTANTE (estilo PallyPower) ==
+    local floatBtn = CreateFrame("Button", "RaidStationFloatBtn", UIParent)
+    floatBtn:SetSize(32, 32)
+    floatBtn:SetFrameStrata("MEDIUM")
+    floatBtn:SetToplevel(true)
+    floatBtn:SetMovable(true)
+    floatBtn:SetClampedToScreen(true)
+
+    -- POSICIÓN INICIAL (persistente)
+    local db = RaidStationDB or {}
+    local x = db.floatBtnX or 200
+    local y = db.floatBtnY or -200
+    floatBtn:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y)
+
+    -- ÍCONO (usar circle.blp de la carpeta Textures)
+    local icon = floatBtn:CreateTexture(nil, "ARTWORK")
+    icon:SetAllPoints()
+    icon:SetTexture("Interface\\AddOns\\RaidStation\\Textures\\circle")
+    floatBtn.icon = icon
+
+    -- ESTADO VISUAL (igual que el minimap)
+    local function ApplyFloatBtnState(isActive)
+        if isActive then
+            floatBtn.icon:SetDesaturated(false)
+            floatBtn.icon:SetVertexColor(1, 1, 1, 1) -- color normal
+        else
+            floatBtn.icon:SetDesaturated(true)
+            floatBtn.icon:SetVertexColor(0.5, 0.5, 0.5, 0.7) -- gris apagado
+        end
+    end
+    floatBtn.ApplyState = ApplyFloatBtnState
+
+    -- Aplicar estado inicial al crear
+    local isActive = (db.addonActive ~= false)
+    ApplyFloatBtnState(isActive)
+
+    -- DRAG (click derecho arrastra)
+    floatBtn:RegisterForDrag("RightButton")
+    floatBtn:SetScript("OnDragStart", function(self)
+        self:StartMoving()
+    end)
+    floatBtn:SetScript("OnDragStop", function(self)
+        self:StopMovingOrSizing()
+        local _, _, _, xOfs, yOfs = self:GetPoint()
+        RaidStationDB.floatBtnX = xOfs
+        RaidStationDB.floatBtnY = yOfs
+    end)
+
+    -- CLICK IZQUIERDO (mostrar/ocultar ventana principal)
+    floatBtn:RegisterForClicks("LeftButtonUp", "RightButtonUp")
+    floatBtn:SetScript("OnClick", function(self, btn)
+        if btn == "LeftButton" then
+            if ns.GUI.MainFrame:IsShown() then
+                ns.GUI.MainFrame:Hide()
+            else
+                ns.GUI.MainFrame:Show()
+                if ns.Minimap and ns.Minimap.ApplyVisualState then
+                    ns.Minimap.ApplyVisualState(true)
+                end
+                if ns.GUI.FloatBtn.ApplyState then
+                    ns.GUI.FloatBtn.ApplyState(true)
+                end
+            end
+        end
+    end)
+
+    -- TOOLTIP
+    floatBtn:SetScript("OnEnter", function(self)
+        GameTooltip:SetOwner(self, "ANCHOR_LEFT")
+        GameTooltip:AddLine("|cff00ffffRaid Station|r")
+        GameTooltip:AddLine("|cffffff00Click-Izq|r: Mostrar/Ocultar ventana")
+        GameTooltip:AddLine("|cffffff00Click-Der|r: Mover boton")
+        GameTooltip:Show()
+    end)
+    floatBtn:SetScript("OnLeave", function(self)
+        GameTooltip:Hide()
+    end)
+
+    -- VISIBILIDAD (controlada por Settings)
+    if db.showFloatBtn == false then
+        floatBtn:Hide()
+    end
+
+    ns.GUI.FloatBtn = floatBtn
 end
 
 ns.GUI = GUI
