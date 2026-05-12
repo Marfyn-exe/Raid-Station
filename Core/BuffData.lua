@@ -91,6 +91,7 @@ BuffData.DEFINITIONS = {
         clase_origen = "Mago",
         tipo = "raid",
         reagente = true,
+        neverFor = { "WARRIOR", "ROGUE", "DEATHKNIGHT" },
         descripcion = "Aumenta el intelecto de toda la banda.",
         responsableLinea = "Asignado: cualquier Mago",
         iconSpellID = 43002,

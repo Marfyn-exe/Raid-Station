@@ -164,55 +164,69 @@ local function layoutRowIcons(row, defs, p, startX)
         local btn = row.icons[i]
         btn:ClearAllPoints()
         btn:SetPoint("LEFT", row, "LEFT", x, 0)
-        btn:Show()
-        local st = p.buffs[def.id]
-        local tex
-        if st and st.present and st.matchedSpellId then
-            tex = select(3, GetSpellInfo(st.matchedSpellId))
-        end
-        tex = tex or BuffData._iconCache[def.id] or "Interface\\Icons\\INV_Misc_QuestionMark"
-        btn.icon:SetTexture(tex)
-        if st.present then
-            btn.icon:SetDesaturated(false)
-            if st.wrongCaster then
-                -- Buff presente pero dado por jugador no asignado
-                btn.icon:SetVertexColor(1, 0.65, 0)
-                btn.border:SetBackdropBorderColor(1, 0.5, 0, 1)
-                btn.border:Show()
-            elseif st.urgent then
-                -- URGENTE: rojo (no usado por otra funcion en esta pestaña)
-                btn.icon:SetVertexColor(1, 0.35, 0.35)
-                btn.border:SetBackdropBorderColor(1, 0.25, 0.25, 1)
-                btn.border:Show()
+
+        local eligible = ns.BuffScanner.isEligible(def, p.classToken)
+        if not eligible then
+            btn:SetAlpha(0)
+            btn:Show()
+            btn:EnableMouse(false)
+        else
+            btn:SetAlpha(1)
+            btn:EnableMouse(true)
+            btn:Show()
+            local st = p.buffs[def.id]
+            local tex
+            if st and st.present and st.matchedSpellId then
+                tex = select(3, GetSpellInfo(st.matchedSpellId))
+            end
+            tex = tex or BuffData._iconCache[def.id] or "Interface\\Icons\\INV_Misc_QuestionMark"
+            btn.icon:SetTexture(tex)
+            if st.present then
+                btn.icon:SetDesaturated(false)
+                if st.wrongCaster then
+                    -- Buff presente pero dado por jugador no asignado
+                    btn.icon:SetVertexColor(1, 0.65, 0)
+                    btn.border:SetBackdropBorderColor(1, 0.5, 0, 1)
+                    btn.border:Show()
+                elseif st.urgent then
+                    -- URGENTE: rojo (no usado por otra funcion en esta pestaña)
+                    btn.icon:SetVertexColor(1, 0.35, 0.35)
+                    btn.border:SetBackdropBorderColor(1, 0.25, 0.25, 1)
+                    btn.border:Show()
+                else
+                    btn.icon:SetVertexColor(1, 1, 1)
+                    btn.border:Hide()
+                end
             else
-                btn.icon:SetVertexColor(1, 1, 1)
+                btn.icon:SetDesaturated(true)
+                btn.icon:SetVertexColor(0.45, 0.45, 0.45)
                 btn.border:Hide()
             end
-        else
-            btn.icon:SetDesaturated(true)
-            btn.icon:SetVertexColor(0.45, 0.45, 0.45)
-            btn.border:Hide()
-        end
-        btn.defId = def.id
-        btn.buffState = st
-        btn:SetScript("OnEnter", function(self)
-            local d = BuffData.GetDefinitionById(self.defId)
-            if not d then return end
-            local pst = self.buffState
-            GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
-            GameTooltip:SetText(d.nombre, 1, 0.82, 0)
-
-            if pst then
-                GameTooltip:AddLine(pst.responsableTooltip or "", 0.85, 0.85, 1, true)
-                GameTooltip:AddLine(estadoLinea(pst, d), 0.7, 1, 0.7, true)
-                if pst.wrongCaster then
-                    GameTooltip:AddLine("Atención: dado por jugador no asignado", 1, 0.5, 0, true)
+            btn.defId = def.id
+            btn.buffState = st
+            btn:SetScript("OnEnter", function(self)
+                local eligible = ns.BuffScanner.isEligible(def, p.classToken)
+                if not eligible then
+                    return
                 end
-            end
+                local d = BuffData.GetDefinitionById(self.defId)
+                if not d then return end
+                local pst = self.buffState
+                GameTooltip:SetOwner(self, "ANCHOR_RIGHT")
+                GameTooltip:SetText(d.nombre, 1, 0.82, 0)
 
-            GameTooltip:Show()
-        end)
-        btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+                if pst then
+                    GameTooltip:AddLine(pst.responsableTooltip or "", 0.85, 0.85, 1, true)
+                    GameTooltip:AddLine(estadoLinea(pst, d), 0.7, 1, 0.7, true)
+                    if pst.wrongCaster then
+                        GameTooltip:AddLine("Atención: dado por jugador no asignado", 1, 0.5, 0, true)
+                    end
+                end
+
+                GameTooltip:Show()
+            end)
+            btn:SetScript("OnLeave", function() GameTooltip:Hide() end)
+        end
         x = x + 20
     end
 end
@@ -468,6 +482,15 @@ function BuffTab.Initialize()
     BuffTab._btnMode = btnMode
     BuffTab._updateModeLabel = updateModeLabel
 
+    local function isDBMAvailable()
+        return (
+            _G["DBM"] ~= nil or
+            SlashCmdList["DEADLYBOSSMODS"] ~= nil or
+            SlashCmdList["DBM"] ~= nil or
+            SlashCmdList["Dbm"] ~= nil
+        )
+    end
+
     -- NUEVA FILA: Controles de raid (Reposicionada arriba, bajo checkboxes)
     local raidBar = CreateFrame("Frame", nil, p)
     raidBar:SetHeight(26)
@@ -502,8 +525,8 @@ function BuffTab.Initialize()
     btnPull:SetPoint("LEFT", btnReady, "RIGHT", 4, 0)
     btnPull:SetText("Pull")
     btnPull:SetScript("OnClick", function()
-        if not SlashCmdList["DBM"] then
-            print("|cFF00FFFF[Buffs]|r : DBM no está instalado o activo.")
+        if not isDBMAvailable() then
+            sysMsg("DBM no esta instalado o activo.")
             return
         end
         local n = tonumber(BuffTab.ebSeconds:GetText()) or 10
@@ -566,8 +589,8 @@ function BuffTab.Initialize()
     btnBreak:SetPoint("LEFT", fsSeg, "RIGHT", 17, 0)
     btnBreak:SetText("Break")
     btnBreak:SetScript("OnClick", function()
-        if not SlashCmdList["DBM"] then
-            print("|cFF00FFFF[Buffs]|r : DBM no está instalado o activo.")
+        if not isDBMAvailable() then
+            sysMsg("DBM no esta instalado o activo.")
             return
         end
         DEFAULT_CHAT_FRAME.editBox:SetText("/dbm break 5")
