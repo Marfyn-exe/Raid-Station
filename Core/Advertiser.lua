@@ -33,10 +33,17 @@ function Advertiser:ResetPatterns()
     }
 end
 
-function Advertiser:GetFormattedMessage(forceAuto)
-    if not forceAuto and self.patterns.fullMessage and self.patterns.fullMessage ~= "" then
+function Advertiser:GetFormattedMessage()
+    -- Siempre reconstruir desde los campos del formulario
+    return self:GetLatestAutoHeader()
+end
+
+function Advertiser:GetSpamMessage()
+    -- Si el usuario editó manualmente la Vista Previa, usar ese valor
+    if self.patterns.fullMessage and self.patterns.fullMessage ~= "" then
         return self.patterns.fullMessage
     end
+    -- Si no, reconstruir automáticamente
     return self:GetLatestAutoHeader()
 end
 
@@ -109,7 +116,7 @@ function Advertiser:GetHeaderParts()
             tinsert(needs, s)
         end
     end
-    parts.needs = #needs > 0 and ("- need " .. tconcat(needs, ", ")) or ""
+    parts.needs = #needs > 0 and ("- Need " .. tconcat(needs, ", ")) or ""
     
     -- 3. Progress
     parts.progress = strformat("[%d/%d]", p.currentCount or 0, p.totalCount or 25)
@@ -133,7 +140,7 @@ function Advertiser:OnUpdate()
     
     local now = GetTime()
     if now - self.lastSpamTime >= self.interval then
-        local msg = self:GetFormattedMessage()
+        local msg = self:GetSpamMessage()
         if msg == "" then return end
         
         -- Send to all selected channels
@@ -172,6 +179,8 @@ function Advertiser:LoadPattern(index)
         return
     end
     self.patterns = ns.Utils.CopyTable(RaidStationDB.patterns[index])
+    self.patterns.fullMessage = ""
+    self.patterns.message = ""
     
     -- Robust Migration & Integrity Check
     if not self.patterns.roles then self.patterns.roles = {} end

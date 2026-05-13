@@ -396,6 +396,8 @@ local function CreateMainFrame()
         if ns.Advertiser and ns.AdvertiserUI then
             ns.Advertiser:ResetPatterns()
             ns.AdvertiserUI:RefreshAllInputs()
+            ns.Advertiser.patterns.fullMessage = ""
+            ns.Advertiser.patterns.message = ""
         end
     end)
     GUI.SkinButton(clearBtn, true)

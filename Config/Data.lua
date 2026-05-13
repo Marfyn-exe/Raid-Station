@@ -8,7 +8,7 @@ ns.Config = {}
 
 -- Synonym Map: Regionalisms/Slang to Canonical IDs
 ns.Config.SYNONYM_MAP = {
-    ["ciudadela"] = "icc", ["corona"] = "icc", ["hielo"] = "icc", ["ciuda"] = "icc",
+    ["ciudadela"] = "icc", ["lady"] = "icc", ["barcos"] = "icc", ["profe"] = "icc",
     ["sagrario"] = "sr", ["rubi"] = "sr", ["halion"] = "sr", ["rs"] = "sr",
     ["prueba"] = "toc", ["cruzado"] = "toc", ["titanes"] = "toc", ["campeones"] = "toc",
     ["archavon"] = "archa", ["conquista"] = "archa", ["torre"] = "archa", ["voa"] = "archa", ["vov"] = "archa", ["archa"] = "archa",
@@ -21,7 +21,7 @@ ns.Config.RAID_LIST = {
     {
         id = "icc",
         name = "ICC",
-        patterns = {"icc", "ciuda", "corona", "hielo", "tuetano", "lk", "icecrown", "citadel"},
+        patterns = {"icc", "profe", "lady", "barcos", "tuetano", "lk", "sindra", "reyna"},
         priorities = 10
     },
     {
@@ -39,7 +39,7 @@ ns.Config.RAID_LIST = {
     {
         id = "archa",
         name = "ARCHA",
-        patterns = {"archa", "archavon", "conquista", "torre", "voa", "fuego", "toran", "koralon", "vault"},
+        patterns = {"archa", "archavon", "conquista", "voa", "toravon", "koralon", "vault"},
         priorities = 7
     },
     {

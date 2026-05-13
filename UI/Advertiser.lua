@@ -245,7 +245,8 @@ function AdvertiserUI.CreatePanel(parent)
 
         check:SetScript("OnClick", function(self)
             ns.Advertiser.channels[chan] = self:GetChecked()
-            AdvertiserUI:ActualizarHeader(true)
+            -- Los canales solo afectan DÓNDE se envía el mensaje, no el contenido.
+            -- No reconstruir el preview aquí para no borrar símbolos {rtN} manuales.
         end)
         AdvertiserUI.chanChecks[i] = check
     end
@@ -430,7 +431,12 @@ function AdvertiserUI.CreatePanel(parent)
         previewEdit:SetBackdropBorderColor(0, 0, 0, 0)
     end
 
+    -- Flag para proteger contra re-entrancia cuando SetText es llamado programáticamente
+    local _updatingPreview = false
+
     previewEdit:SetScript("OnTextChanged", function(self, userInput)
+        -- Ignorar eventos disparados por SetText programático
+        if _updatingPreview then return end
         local p = ns.Advertiser.patterns
         if userInput then
             p.fullMessage = self:GetText()
@@ -494,91 +500,23 @@ function AdvertiserUI.CreatePanel(parent)
 
     function AdvertiserUI:ActualizarHeader(isSilent)
         local p = ns.Advertiser.patterns
-        local parts = ns.Advertiser:GetHeaderParts() -- Separate tech parts: base, needs, progress
-        local current = self.previewEdit:GetText()
-
-        -- 1. Sync Technical Parts (A, B, C)
-        -- Part A: Header (Armo ICC 25 H)
-        local basePattern = "Armo [^{%-%[]+"
-        if current:find(basePattern) then
-            current = current:gsub(basePattern, parts.base .. " ", 1)
+        
+        -- Obtener mensaje base auto-generado (siempre reconstruido desde cero)
+        local txt = ns.Advertiser:GetFormattedMessage()
+        
+        -- Añadir el mensaje de notas si existe
+        if p.message and p.message ~= "" then
+            txt = txt .. " " .. p.message
         end
+        
+        -- Proteger contra re-entrancia: SetText en MultiLine EditBox (WoW 3.3.5a)
+        -- puede disparar OnTextChanged con userInput=true de forma incorrecta.
+        _updatingPreview = true
+        self.previewEdit:SetText("")
+        self.previewEdit:SetText(txt)
+        _updatingPreview = false
 
-        -- Part B: Needs (- need Tank, Healer, ...)
-        local needsPattern = "%- need [^{%[]+"
-        if current:find(needsPattern) then
-            if parts.needs ~= "" then
-                current = current:gsub(needsPattern, parts.needs .. " ", 1)
-            else
-                current = current:gsub(needsPattern, "", 1)
-            end
-        elseif parts.needs ~= "" then
-            -- If needs missing, append them after the base header (Part A)
-            local basePattern = "(Armo [^{%- ]+)" -- Added capture group and a space check
-            if current:find(basePattern) then
-                current = current:gsub(basePattern, "%1 " .. parts.needs .. " ", 1)
-            else
-                current = current .. " " .. parts.needs
-            end
-        end
-
-        -- Part C: Progress ([x/y])
-        local countPattern = "%[%d+/%d+%]"
-        if current:find(countPattern) then
-            current = current:gsub(countPattern, parts.progress, 1)
-        else
-            -- If progress missing, append it after needs or at the end
-            current = current .. " " .. parts.progress
-        end
-
-        -- 2. Sync 'Notas' field — anchored on [x/y] progress block
-        -- Capture any {rtN} marker wrapping the notes BEFORE we cut, so we can re-wrap on re-append.
-        -- Pattern: [x/y] ... {rtN}<notes>{rtN}  →  capture the marker tag (e.g. "rt8")
-        local progressAnchor = current:match("%[%d+/%d+%]")
-
-        -- Extract the live notes marker from the string (if present) so we can re-apply it.
-        -- We look for {rtN} immediately after [x/y] (with optional space) wrapping any text.
-        local liveMarker = current:match("%[%d+/%d+%]%s*{(rt%d)}") -- e.g. "rt8"
-        if liveMarker then
-            p.notesMarker = liveMarker
-        end
-        -- p.notesMarker persists across calls; only reset when notes are cleared.
-        if not p.message or p.message == "" then
-            p.notesMarker = nil
-        end
-
-        local function wrapNotes(base, notes, marker)
-            if marker and marker ~= "" then
-                return base .. " {" .. marker .. "}" .. notes .. "{" .. marker .. "}"
-            end
-            return base .. " " .. notes
-        end
-
-        if progressAnchor then
-            -- Has a progress block: cut everything after [x/y] and re-append notes.
-            current = current:gsub("%[%d+/%d+%].*$", progressAnchor)
-            if p.message and p.message ~= "" then
-                current = wrapNotes(current, p.message, p.notesMarker)
-            end
-        else
-            -- No progress block: fall back to end-of-string strip (legacy path).
-            if p.lastSyncNotes and p.lastSyncNotes ~= "" then
-                local escapedOldNotes = p.lastSyncNotes:gsub("[%(%)%.%%%+%-%*%?%[%^%$%]]", "%%%1")
-                local stripped = current:gsub("%s*{rt%d}%s*" .. escapedOldNotes .. "%s*{rt%d}%s*$", "")
-                if stripped == current then
-                    stripped = current:gsub("%s*" .. escapedOldNotes .. "%s*$", "")
-                end
-                current = stripped
-            end
-            if p.message and p.message ~= "" then
-                current = wrapNotes(current, p.message, p.notesMarker)
-            end
-        end
-        p.lastSyncNotes = p.message
-
-        -- Finish
-        self.previewEdit:SetText(current)
-        p.fullMessage = current
+        AdvertiserUI:UpdatePreviewCount()
 
         if not isSilent then
             print("|cff00ff00Marfyn|r: Composición actualizada.")
@@ -659,11 +597,13 @@ function AdvertiserUI.CreatePanel(parent)
         UIDropDownMenu_SetText(self.sizeDrop, tostring(p.totalCount))
 
         -- Reset Sync State (Sync V3)
-        local base = ns.Advertiser:GetLatestAutoHeader()
+        local base = ns.Advertiser:GetFormattedMessage()
+        if p.message and p.message ~= "" then
+            base = base .. " " .. p.message
+        end
         p.lastAutoGenerated = base
         p.lastSyncNotes = ""
         self.previewEdit:SetText(base)
-        p.fullMessage = base
     end
 
     -- === SKIN ELVUI-STYLE ===
